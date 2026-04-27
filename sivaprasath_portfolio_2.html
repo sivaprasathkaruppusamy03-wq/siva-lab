@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sivaprasath Karuppusamy — Dynamics 365 CRM Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #1D9E75;
+      --accent-dark: #0F6E56;
+      --accent-light: #E1F5EE;
+      --accent-text: #085041;
+      --bg: #ffffff;
+      --bg-secondary: #f7f7f5;
+      --text: #1a1a18;
+      --text-muted: #6b6b68;
+      --border: rgba(0,0,0,0.1);
+      --card: #ffffff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111110;
+        --bg-secondary: #1a1a18;
+        --text: #f0ede8;
+        --text-muted: #9b9994;
+        --border: rgba(255,255,255,0.1);
+        --card: #1a1a18;
+        --accent-light: #04342C;
+        --accent-text: #5DCAA5;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .container { max-width: 820px; margin: 0 auto; padding: 0 2rem; }
+
+    /* Nav */
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      z-index: 100;
+      padding: 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: var(--text);
+      padding: 1rem 0;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .nav-links { display: flex; gap: 0; }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 1rem 14px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      font-weight: 400;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 0 4rem;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.1s forwards;
+    }
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(40px, 7vw, 64px);
+      line-height: 1.05;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.2s forwards;
+    }
+    .hero-role {
+      font-size: 17px;
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.3s forwards;
+    }
+    .hero-bio {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text);
+      max-width: 560px;
+      border-left: 2px solid var(--accent);
+      padding-left: 1.25rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.4s forwards;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.5s forwards;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 0.5px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn:hover { background: var(--bg-secondary); transform: translateY(-1px); }
+    .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-primary:hover { background: var(--accent-dark); }
+
+    /* Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 3rem 0 2rem;
+    }
+    .stat {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 30px;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Sections */
+    .section { padding: 4rem 0; border-bottom: 0.5px solid var(--border); }
+    .section:last-of-type { border-bottom: none; }
+    .sec-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .sec-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    /* Experience */
+    .exp-item {
+      padding: 1.5rem;
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .exp-item:hover { border-color: var(--accent); }
+    .exp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .exp-company { font-size: 16px; font-weight: 500; color: var(--text); }
+    .exp-period {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+    .exp-role { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 10px; }
+    .exp-desc { font-size: 14px; color: var(--text-muted); line-height: 1.75; }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+    }
+    .skill-card {
+      padding: 1.25rem;
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s;
+    }
+    .skill-card:hover { border-color: var(--accent); }
+    .skill-cat {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 12px;
+      padding: 4px 10px;
+      background: var(--accent-light);
+      color: var(--accent-text);
+      border-radius: 10px;
+      font-weight: 400;
+    }
+
+    /* Projects */
+    .proj-card {
+      padding: 1.5rem;
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .proj-card:hover { border-color: var(--accent); }
+    .proj-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .proj-name { font-size: 16px; font-weight: 500; color: var(--text); }
+    .proj-badge {
+      font-size: 11px;
+      padding: 4px 12px;
+      background: var(--accent-light);
+      color: var(--accent-text);
+      border-radius: 10px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .proj-desc { font-size: 14px; color: var(--text-muted); line-height: 1.75; margin-bottom: 12px; }
+    .proj-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .contact-item {
+      padding: 1.25rem;
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+    }
+    .contact-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .contact-val { font-size: 14px; color: var(--text); font-weight: 500; word-break: break-all; }
+    .contact-val a { color: var(--accent); text-decoration: none; }
+    .contact-val a:hover { text-decoration: underline; }
+    .contact-note {
+      padding: 1.5rem;
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+    }
+    .contact-note p { font-size: 14px; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.25rem; }
+
+    .exp-group-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 500;
+      margin: 1rem 0 0.5rem;
+    }
+    .exp-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .exp-list li {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      padding-left: 1rem;
+      position: relative;
+    }
+    .exp-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* Certifications */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .cert-card {
+      padding: 1.25rem;
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .cert-card:hover { border-color: var(--accent); }
+    .cert-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      background: var(--accent-light);
+      color: var(--accent-text);
+      border-radius: 10px;
+      width: fit-content;
+    }
+    .cert-name { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .cert-issuer { font-size: 12px; color: var(--text-muted); }
+
+    /* Footer */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 2rem 0;
+      text-align: center;
+    }
+    footer p { font-size: 12px; color: var(--text-muted); }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .stat-num { font-size: 22px; }
+      .hero { padding: 3rem 0 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav-inner">
+    <a href="#hero" class="nav-logo">SK</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+      <div class="hero-label">Dynamics 365 CRM Developer</div>
+      <h1 class="hero-name">Sivaprasath<br>Karuppusamy</h1>
+      <p class="hero-role">Power Platform · Dataverse · C# · Banking & Financial Services</p>
+      <p class="hero-bio">Dynamics 365 CRM Developer with 4+ years of end-to-end delivery experience in banking and financial services. Certified across PL-900, PL-100, MB-230, and AZ-900. Seeking a senior individual contributor or tech lead role in a Dynamics 365 / Power Platform environment.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="mailto:ksprasath1303@gmail.com">Get in touch</a>
+        <a class="btn" href="#projects">View projects</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about">
+      <div class="sec-label">About</div>
+      <h2 class="sec-title">Who I am</h2>
+      <div class="stats-row reveal">
+        <div class="stat">
+          <div class="stat-num">4+</div>
+          <div class="stat-lbl">Years experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-lbl">MS Certifications</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">BFSI</div>
+          <div class="stat-lbl">Domain focus</div>
+        </div>
+      </div>
+      <p class="reveal" style="font-size:15px;line-height:1.85;color:var(--text);margin-bottom:1rem">I'm a Dynamics 365 CRM Developer with deep expertise in the Power Platform ecosystem. My work sits at the intersection of business process automation and enterprise CRM architecture — helping banking and financial services organisations unlock the full value of Microsoft's stack.</p>
+      <p class="reveal" style="font-size:15px;line-height:1.85;color:var(--text);margin-bottom:1rem">From building custom C# plugins and configuring Model-Driven Apps to designing Dataverse schemas and orchestrating multi-step Power Automate flows, I deliver end-to-end CRM solutions that are robust, maintainable, and aligned to real business needs.</p>
+      <p class="reveal" style="font-size:15px;line-height:1.85;color:var(--text)">Holding four Microsoft certifications — PL-900, PL-100, MB-230, and AZ-900 — I'm now targeting a senior individual contributor or tech lead role where I can drive platform strategy, mentor developers, and shape CRM solutions at scale.</p>
+    </section>
+
+    <!-- Experience -->
+    <section class="section" id="experience">
+      <div class="sec-label">Experience</div>
+      <h2 class="sec-title">Where I've worked</h2>
+      <div class="exp-item reveal">
+        <div class="exp-top">
+          <div>
+            <div class="exp-company">Cognizant Technology Solutions</div>
+            <div class="exp-role">Dynamics 365 CRM Developer / Support Analyst · Bangalore</div>
+          </div>
+          <div class="exp-period">Feb 2022 — Present</div>
+        </div>
+
+        <div class="exp-group-label">Automation & Process Improvement</div>
+        <ul class="exp-list">
+          <li>Automated mailbox onboarding and 6 operational approval workflows using Power Automate Cloud Flows integrated with Dataverse, Outlook, and SharePoint — reducing manual effort by 40% and eliminating processing delays.</li>
+          <li>Developed a C# Console Application to bulk-export and re-import Unified Routing configurations (routing rules, queues, workstreams) across Dev, UAT, and Production, cutting environment migration time from days to hours.</li>
+          <li>Implemented JavaScript-based duplicate detection validations on critical CRM forms, reducing duplicate record incidents by an estimated 60% post-deployment.</li>
+        </ul>
+
+        <div class="exp-group-label">Platform Development & Customisation</div>
+        <ul class="exp-list">
+          <li>Developed and maintained custom C# plugins (synchronous and asynchronous) in Dynamics 365 / Dataverse to enforce complex business logic and data validation across the plugin pipeline.</li>
+          <li>Built and customised Model-Driven Apps including forms, views, dashboards, and business rules; wrote JavaScript web resources for field-level UX logic and conditional form behaviour.</li>
+          <li>Designed Dataverse schema (tables, columns, 1:N and N:N relationships) and configured security roles, business units, and field-level security to enforce role-based access control.</li>
+          <li>Managed Dynamics 365–Outlook shared mailbox integration across three environments (Dev, UAT, Production); supported user onboarding and delivered training sessions.</li>
+        </ul>
+
+        <div class="exp-group-label">ALM, Delivery & Stakeholder Collaboration</div>
+        <ul class="exp-list">
+          <li>Designed and maintained ALM pipelines using managed/unmanaged solutions, environment variables, and connection references for consistent, repeatable deployments across Dev, UAT, and Production.</li>
+          <li>Supported full SDLC across multiple sprints: requirement analysis, technical design, development, testing, UAT, deployment, and post-go-live production support.</li>
+          <li>Collaborated with business stakeholders to produce functional and technical design documents; participated in sprint ceremonies, backlog grooming, and demo sessions using Azure DevOps.</li>
+          <li>Created custom views and dashboards surfacing actionable KPIs for business and support leadership teams.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="section" id="skills">
+      <div class="sec-label">Skills</div>
+      <h2 class="sec-title">What I work with</h2>
+      <div class="skills-grid">
+        <div class="skill-card reveal">
+          <div class="skill-cat">Platform & Technologies</div>
+          <div class="skill-tags">
+            <span class="tag">Power Platform</span>
+            <span class="tag">Canvas Apps</span>
+            <span class="tag">Model-Driven Apps</span>
+            <span class="tag">Power Automate</span>
+            <span class="tag">Dynamics 365 CS</span>
+            <span class="tag">Dynamics 365 Sales</span>
+            <span class="tag">Dataverse</span>
+            <span class="tag">Azure</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-cat">Development</div>
+          <div class="skill-tags">
+            <span class="tag">C# Plugins (sync/async)</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Cloud Flows</span>
+            <span class="tag">.NET Console Apps</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-cat">CRM Capabilities</div>
+          <div class="skill-tags">
+            <span class="tag">Model-Driven Config</span>
+            <span class="tag">Unified Routing</span>
+            <span class="tag">Security Roles</span>
+            <span class="tag">Business Units</span>
+            <span class="tag">Field-Level Security</span>
+            <span class="tag">SLAs</span>
+            <span class="tag">Queues</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-cat">ALM & DevOps</div>
+          <div class="skill-tags">
+            <span class="tag">Azure DevOps</span>
+            <span class="tag">Managed Solutions</span>
+            <span class="tag">Unmanaged Solutions</span>
+            <span class="tag">Environment Variables</span>
+            <span class="tag">Connection References</span>
+            <span class="tag">Dev → UAT → Prod</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-cat">Database</div>
+          <div class="skill-tags">
+            <span class="tag">SQL Server</span>
+            <span class="tag">Dataverse Schema</span>
+            <span class="tag">1:N / N:N Relationships</span>
+            <span class="tag">Data Validation</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-cat">Tools & Methodology</div>
+          <div class="skill-tags">
+            <span class="tag">Visual Studio 2022</span>
+            <span class="tag">SharePoint Online</span>
+            <span class="tag">ServiceNow</span>
+            <span class="tag">Outlook Integration</span>
+            <span class="tag">Agile / Scrum</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications -->
+    <section class="section" id="certifications">
+      <div class="sec-label">Certifications</div>
+      <h2 class="sec-title">Microsoft certified</h2>
+      <div class="cert-grid">
+        <div class="cert-card reveal">
+          <span class="cert-badge">PL-900</span>
+          <div class="cert-name">Microsoft Power Platform Fundamentals</div>
+          <div class="cert-issuer">Microsoft</div>
+        </div>
+        <div class="cert-card reveal">
+          <span class="cert-badge">PL-100</span>
+          <div class="cert-name">Microsoft Power Platform App Maker</div>
+          <div class="cert-issuer">Microsoft</div>
+        </div>
+        <div class="cert-card reveal">
+          <span class="cert-badge">MB-230</span>
+          <div class="cert-name">Microsoft Dynamics 365 Customer Service Functional Consultant</div>
+          <div class="cert-issuer">Microsoft</div>
+        </div>
+        <div class="cert-card reveal">
+          <span class="cert-badge">AZ-900</span>
+          <div class="cert-name">Microsoft Azure Fundamentals</div>
+          <div class="cert-issuer">Microsoft</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section" id="projects">
+      <div class="sec-label">Projects</div>
+      <h2 class="sec-title">What I've built</h2>
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <div class="proj-name">Banking & Financial Services — Northern Trust</div>
+          <div class="proj-badge">BFSI</div>
+        </div>
+        <p class="proj-desc">End-to-end CRM delivery for Northern Trust Bank, one of the largest global custodian banks. Involved in designing and customising Dynamics 365 CRM solutions tailored to banking workflows — including client relationship management, case handling automation, and Dataverse-based architecture for compliance and auditability.</p>
+        <div class="proj-stack">
+          <span class="tag">Dynamics 365</span>
+          <span class="tag">Model-Driven App</span>
+          <span class="tag">Power Automate</span>
+          <span class="tag">C# Plugins</span>
+          <span class="tag">Dataverse</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+      <div class="sec-label">Contact</div>
+      <h2 class="sec-title">Let's talk</h2>
+      <div class="contact-grid">
+        <div class="contact-item reveal">
+          <div class="contact-label">Email</div>
+          <div class="contact-val"><a href="mailto:ksprasath1303@gmail.com">ksprasath1303@gmail.com</a></div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-label">Location</div>
+          <div class="contact-val">Erode, Tamil Nadu, India</div>
+        </div>
+        <div class="contact-item reveal">
+          <div class="contact-label">Availability</div>
+          <div class="contact-val" style="color:var(--accent)">Seeking senior / tech lead role</div>
+        </div>
+      </div>
+      <div class="contact-note reveal">
+        <p>Interested in working together or have a CRM challenge to solve? Reach out via email — I'm always happy to discuss Dynamics 365, Power Platform, or potential collaborations.</p>
+        <a class="btn btn-primary" href="mailto:ksprasath1303@gmail.com">Send an email</a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>© 2026 Sivaprasath Karuppusamy — Dynamics 365 CRM Developer</p>
+  </div>
+</footer>
+
+<script>
+  // Active nav on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Scroll reveal
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
+
+</body>
+</html>
